@@ -6,40 +6,30 @@ module.exports = {
     extensions: ["xLink","xAttributeOptions"]
     properties:
       subtitle:
-        description: "Chart type"
+        description: "Subtitle"
         type: "string"
         default: ""
         required: false
       xlabel:
-        description: "Chart xlabel"
+        description: "X - label"
         type: "string"
         default: ""
       ylabel:
-        description: "Chart ylabel"
+        description: "Y - label"
         type: "string"
         default: ""
       height:
-        description: "Chart height"
+        description: "Height"
         type: "number"
         default: 150
       timerange:
-        description: "Chart height"
+        description: "TimeRanger to display"
         type: "string"
         enum: ["30min", "1h", "3h", "12h", "1d", "3d", "7d", "14d", "1month" ]
         default: "1d"
         required: false
-      rollperiod:
-        description: "Chart height"
-        type: "number"
-        default: 0
-        required: false
-      fillgraph:
-        description: "Chart height"
-        type: "boolean"
-        default: false
-        required: false
       legend:
-        description: "Chart legend"
+        description: "Show legend"
         type: "boolean"
         default: false
         required: false
@@ -55,22 +45,26 @@ module.exports = {
         format: "table"
         items:
           type: "object"
-          required: ["name", "expression", "type"]
+          required: ["name", "expression", "type", "chart"]
           properties:
             name:
-              description: "Name for the corresponding attribute."
+              description: "Name for the corresponding variable."
               type: "string"
             expression:
               description: "
                 The expression to use to get the value. Can be just a variable name ($myVar),
-                a calculation ($myVar + 10) or a string interpolation (\"Test: {$myVar}!\")
-                "
+                a calculation ($myVar + 10)"
               type: "string"
             type:
               description: "The type of the variable."
               type: "string"
               default: "number"
-              enum: ["boolean", "number"]
+              enum: ["number" , "boolean"]
+            chart:
+              description: "The type of the chart for this variable ."
+              type: "string"
+              default: "line"
+              enum: ["line" , "spline", "area", "areaspline", "column", "scatter" ]
             label:
               description: "A custom label to use in the frontend."
               type: "string"
@@ -81,9 +75,54 @@ module.exports = {
               type: "boolean"
               default: false
               required: false
-            discrete:
+  GaugeDevice :
+    title: "Gauge Properties"
+    type: "object"
+    required: ["scale"]
+    extensions: ["xLink","xAttributeOptions"]
+    properties:
+      scale:
+        description: "scale factor"
+        type: "number"
+        default: 1.0
+      variables:
+        description: "Variables to display"
+        type: "array"
+        default: []
+        format: "table"
+        items:
+          type: "object"
+          required: ["name", "expression", "type", "chart", "min", "max", "label"]
+          properties:
+            name:
+              description: "Name for the corresponding variable."
+              type: "string"
+            expression:
               description: "
-                Should be set to true if the value does not change continuously over time."
+                The expression to use to get the value. Can be just a variable name ($myVar),
+                a calculation ($myVar + 10)"
+              type: "string"
+            type:
+              description: "The type of the variable."
+              type: "string"
+              default: "number"
+              enum: ["number" , "boolean"]
+            min:
+              description: "The type of the chart for this variable ."
+              type: "number"
+              default: 0
+            max:
+              description: "The type of the chart for this variable ."
+              type: "number"
+              default: 100  
+            unit:
+              description: "A custom label to use in the frontend."
+              type: "string"
+              required: false
+              default: ""
+            showRange:
+              description: "A custom label to use in the frontend."
               type: "boolean"
               required: false
+              default: false
 }
