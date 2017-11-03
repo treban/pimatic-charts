@@ -26,7 +26,6 @@
   },
   "configSchema": "charts-config-schema.coffee",
   "dependencies": {
-    "child_process": "^0.2.2"
   },
   "keywords": [
     "pimatic",
