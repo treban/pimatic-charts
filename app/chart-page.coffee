@@ -20,15 +20,15 @@ $(document).on 'templateinit', (event) ->
       @deviceConfig = @device.config
       @devattr = @device.config.variables
       @chartId = "chart-#{templData.deviceId}"
-
+      
+      @subtitle = @device.config.subtitle ? @device.configDefaults.subtitle
       @height = @device.config.height ? @device.configDefaults.height
       @xlabel = @device.config.xlabel ? @device.configDefaults.xlabel
       @ylabel = @device.config.ylabel ? @device.configDefaults.ylabel
-      @rollperiod = @device.config.rollperiod ? @device.configDefaults.rollperiod
-      @fillGraph = @device.config.fillGraph ? @device.configDefaults.fillGraph
       @legend = @device.config.legend ? @device.configDefaults.legend
       @timerange = @device.config.timerange ? @device.configDefaults.timerange
-      @subtitle = @device.config.subtitle ? @device.configDefaults.subtitle
+      @allowzoom = @device.config.allowzoom ? @device.configDefaults.allowzoom
+      
 
       @dateval = new Date()
       @dateval = switch
@@ -46,10 +46,10 @@ $(document).on 'templateinit', (event) ->
         {
           chart: {
               height: @height
-              zoomType: 'x'
+              zoomType: if @allowzoom then 'x' else 'none' 
           },
           title: {
-              text: ''
+              text: null
           },
           subtitle: {
               text: @subtitle
@@ -64,6 +64,9 @@ $(document).on 'templateinit', (event) ->
           },
           legend: {
               enabled: @legend
+          },
+          credits: {
+              enabled: false
           },
           plotOptions: {
               area: {
@@ -91,7 +94,12 @@ $(document).on 'templateinit', (event) ->
         @refresh()
       , 10000
       super(elements)
-
+      
+    drawSeries: () =>
+      for attr in @devattr
+        if attr.type in ["number", "boolean"]
+          @getData(attr)
+          
     getData: (attr) =>
       @crit = {}
       @crit.after = @dateval
@@ -105,6 +113,7 @@ $(document).on 'templateinit', (event) ->
           update = {
             name: attr.name,
             data: @data,
+            type: attr.chart,
             step: attr.step,
             tooltip: {
                 valueDecimals: 2
@@ -123,11 +132,6 @@ $(document).on 'templateinit', (event) ->
         toPush[1]=(i['value'])
         @resu.splice(i['time'], 0, toPush);
       return @resu
-
-    drawSeries: () =>
-      for attr in @devattr
-        if attr.type in ["number", "boolean"]
-          @getData(attr)
 
     refresh: () =>
       console.log "refresh"
@@ -149,6 +153,7 @@ $(document).on 'templateinit', (event) ->
       super(templData,@device)
       @deviceConfig = @device.config
       @devattr = @device.config.variables
+      @scale = @device.config.scale
       @chartId = "chart-#{templData.deviceId}"
 
       super(templData, @device)
@@ -160,16 +165,15 @@ $(document).on 'templateinit', (event) ->
           )
 
       @gaugeOptions = {
-
         chart: {
-            height: 600
-            width: 400
-            type: 'solidgauge'
-        },
+          type: 'solidgauge',
+          height: 180*@scale,
+          width: 250*@scale
+        },  
         title: null,
         pane: {
             center: ['50%', '85%'],
-            size: '140%',
+            size: '100%',
             startAngle: -90,
             endAngle: 90,
             background: {
@@ -179,26 +183,29 @@ $(document).on 'templateinit', (event) ->
                 shape: 'arc'
             }
         },
+        credits: {
+            enabled: false
+        },    
         tooltip: {
             enabled: false
         },
         yAxis: {
             stops: [
-                [0.1, '#55BF3B'],
-                [0.5, '#DDDF0D'],
-                [0.9, '#DF5353']
+                [0.1, '#55BF3B'], // green
+                [0.5, '#DDDF0D'], // yellow
+                [0.9, '#DF5353'] // red
             ],
             lineWidth: 0,
             minorTickInterval: null,
             tickAmount: 2,
             title: {
-                y: -70
+                y: -1*(50*scale)
             },
             labels: {
-                y: 16
+                enabled: true,
+                y: 18
             }
-        },
-
+        },  
         plotOptions: {
             solidgauge: {
                 dataLabels: {
@@ -217,7 +224,6 @@ $(document).on 'templateinit', (event) ->
           console.log attr
           console.log value
 
-
     afterRender: (elements) =>
       for attr in @devattr
         if attr.type in ["number", "boolean"]
@@ -226,22 +232,23 @@ $(document).on 'templateinit', (event) ->
           #@chartobj.push(obj)
           @gauge=Highcharts.chart(obj[0], Highcharts.merge(@gaugeOptions, {
             yAxis: {
-                min: 0,
-                max: 200,
+                min: attr.min,
+                max: attr.max,
                 title: {
-                    text: 'Speed'
+                    text: attr.name
+                }
+                labels: {
+                  enabled: attr.showRange
                 }
             },
-
-            credits: {
-                enabled: false
-            },
-
             series: [{
-                name: 'Speed',
-                data: [80],
-                tooltip: {
-                    valueSuffix: ' km/h'
+                name: attr.name,
+                data: [0],
+                dataLabels: {
+                  format: '<div style="text-align:center"><span style="font-size:'+attr.scale*17+'px;color:' +
+                      ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.0f}</span><br/>' +
+                         '<span style="font-size:'+attr.scale*12+'px;color:silver">'+attr.unit+'</span></div>',
+                  y: +12
                 }
             }]
           }))
@@ -251,20 +258,13 @@ $(document).on 'templateinit', (event) ->
       , 10000
       super(elements)
 
-    drawSeries: (elements) =>
-
-
     refresh: () =>
       console.log "refresh"
 
-    resize: () =>
-      setTimeout =>
-        @myChart.reflow()
-      , 500
-
-
-
-
+#    resize: () =>
+#     setTimeout =>
+#        @myChart.reflow()
+#      , 500
 
   pimatic.templateClasses['chart'] = ChartDeviceItem
   pimatic.templateClasses['gauge'] = GaugeDeviceItem
