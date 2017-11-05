@@ -12,7 +12,7 @@ module.exports = (env) ->
         createCallback : (config, lastState) => new ChartDevice(config,lastState, @framework)
       })
       @framework.deviceManager.registerDeviceClass("GaugeDevice",{
-        configDef : deviceConfigDef.ChartDevice,
+        configDef : deviceConfigDef.GaugeDevice,
         createCallback : (config, lastState) => new GaugeDevice(config,lastState, @framework)
       })
       @framework.on "after init", =>

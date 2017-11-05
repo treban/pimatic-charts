@@ -38,6 +38,10 @@ module.exports = {
         type: "boolean"
         default: false
         required: false
+      interval:
+        description: "Refresh interval in seconds. 0 = never"
+        type: "number"
+        default: 0
       variables:
         description: "Variables to display"
         type: "array"
@@ -59,17 +63,12 @@ module.exports = {
               description: "The type of the variable."
               type: "string"
               default: "number"
-              enum: ["number" , "boolean"]
+              enum: ["number"]
             chart:
               description: "The type of the chart for this variable ."
               type: "string"
               default: "line"
               enum: ["line" , "spline", "area", "areaspline", "column", "scatter" ]
-            label:
-              description: "A custom label to use in the frontend."
-              type: "string"
-              required: false
-              default: ""
             step:
               description: "Chart type"
               type: "boolean"
@@ -85,6 +84,7 @@ module.exports = {
         description: "scale factor"
         type: "number"
         default: 1.0
+        required: true
       variables:
         description: "Variables to display"
         type: "array"
@@ -92,7 +92,7 @@ module.exports = {
         format: "table"
         items:
           type: "object"
-          required: ["name", "expression", "type", "chart", "min", "max", "label"]
+          required: ["name", "expression", "type", "min", "max"]
           properties:
             name:
               description: "Name for the corresponding variable."
@@ -106,7 +106,7 @@ module.exports = {
               description: "The type of the variable."
               type: "string"
               default: "number"
-              enum: ["number" , "boolean"]
+              enum: ["number"]
             min:
               description: "The type of the chart for this variable ."
               type: "number"
@@ -114,7 +114,7 @@ module.exports = {
             max:
               description: "The type of the chart for this variable ."
               type: "number"
-              default: 100  
+              default: 100
             unit:
               description: "A custom label to use in the frontend."
               type: "string"

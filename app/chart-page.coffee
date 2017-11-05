@@ -20,15 +20,16 @@ $(document).on 'templateinit', (event) ->
       @deviceConfig = @device.config
       @devattr = @device.config.variables
       @chartId = "chart-#{templData.deviceId}"
-      
+
       @subtitle = @device.config.subtitle ? @device.configDefaults.subtitle
       @height = @device.config.height ? @device.configDefaults.height
       @xlabel = @device.config.xlabel ? @device.configDefaults.xlabel
       @ylabel = @device.config.ylabel ? @device.configDefaults.ylabel
       @legend = @device.config.legend ? @device.configDefaults.legend
+      @interval = @device.config.interval ? @device.configDefaults.interval
       @timerange = @device.config.timerange ? @device.configDefaults.timerange
       @allowzoom = @device.config.allowzoom ? @device.configDefaults.allowzoom
-      
+
 
       @dateval = new Date()
       @dateval = switch
@@ -46,7 +47,7 @@ $(document).on 'templateinit', (event) ->
         {
           chart: {
               height: @height
-              zoomType: if @allowzoom then 'x' else 'none' 
+              zoomType: if @allowzoom then 'x' else 'none'
           },
           title: {
               text: null
@@ -55,7 +56,10 @@ $(document).on 'templateinit', (event) ->
               text: @subtitle
           },
           xAxis: {
-              type: 'datetime'
+              type: 'datetime',
+              title: {
+                  text: @xlabel
+              }
           },
           yAxis: {
               title: {
@@ -90,17 +94,19 @@ $(document).on 'templateinit', (event) ->
       @myChart = Highcharts.chart(@chartobj[0],@chartoptions)
       @drawSeries()
       window.addEventListener("resize", @resize , true)
-      setInterval () =>
-        @refresh()
-      , 10000
+      console.log @interval
+      if (@interval > 0 )
+        setInterval () =>
+          @refresh()
+        , @interval*1000
       super(elements)
-      
+
     drawSeries: () =>
       for attr in @devattr
-        if attr.type in ["number", "boolean"]
+        if attr.type in ["number"]
           @getData(attr)
-          
-    getData: (attr) =>
+
+    getData: (attr,refresh,series) =>
       @crit = {}
       @crit.after = @dateval
       pimatic.client.rest.querySingleDeviceAttributeEvents({
@@ -119,10 +125,11 @@ $(document).on 'templateinit', (event) ->
                 valueDecimals: 2
             }
           }
-          @myChart.addSeries(update)
-      ).fail( ->
-        onError()
-      )
+          if (!refresh)
+            @myChart.addSeries(update)
+          else
+            @myChart.series[series].setData(@data)
+      ).fail(ajaxAlertFail)
 
     convertData: (rawdata) =>
       @resu = new Array()
@@ -134,7 +141,10 @@ $(document).on 'templateinit', (event) ->
       return @resu
 
     refresh: () =>
-      console.log "refresh"
+      i = 0
+      for attr in @devattr
+        if attr.type in ["number"]
+          @getData(attr,true,i++)
 
     resize: () =>
       setTimeout =>
@@ -148,32 +158,34 @@ $(document).on 'templateinit', (event) ->
     @myChart = null
     @dateval = 0
     @drawseries = null
+    @gauge = []
 
     constructor: (templData, @device) ->
       super(templData,@device)
       @deviceConfig = @device.config
       @devattr = @device.config.variables
-      @scale = @device.config.scale
+      @scale = @device.config.scale ? @device.configDefaults.scale
       @chartId = "chart-#{templData.deviceId}"
 
       super(templData, @device)
 
       for attr in @device.attributes()
+        @cache = attr.name
         if attr.type in ["number"]
-          @getAttribute(attr.name).value.subscribe( () =>
+          @getAttribute(attr.name).value.subscribe( (val) =>
             @updateGauges()
           )
 
       @gaugeOptions = {
         chart: {
           type: 'solidgauge',
-          height: 180*@scale,
-          width: 250*@scale
-        },  
+          height: 190*@scale,
+          width: 270*@scale
+        },
         title: null,
         pane: {
             center: ['50%', '85%'],
-            size: '100%',
+            size: '165%',
             startAngle: -90,
             endAngle: 90,
             background: {
@@ -185,27 +197,27 @@ $(document).on 'templateinit', (event) ->
         },
         credits: {
             enabled: false
-        },    
+        },
         tooltip: {
             enabled: false
         },
         yAxis: {
             stops: [
-                [0.1, '#55BF3B'], // green
-                [0.5, '#DDDF0D'], // yellow
-                [0.9, '#DF5353'] // red
+                [0.1, '#55BF3B'],
+                [0.5, '#DDDF0D'],
+                [0.9, '#DF5353']
             ],
             lineWidth: 0,
             minorTickInterval: null,
             tickAmount: 2,
             title: {
-                y: -1*(50*scale)
+                y: -1*(70*@scale)
             },
             labels: {
                 enabled: true,
                 y: 18
             }
-        },  
+        },
         plotOptions: {
             solidgauge: {
                 dataLabels: {
@@ -221,16 +233,14 @@ $(document).on 'templateinit', (event) ->
       for attr in @device.attributes()
         if attr.type in ["number"]
           value = @getAttribute(attr.name).value()
-          console.log attr
-          console.log value
+          @myChart[attr.name].series[0].points[0].update(value)
 
     afterRender: (elements) =>
+      @myChart = {}
       for attr in @devattr
         if attr.type in ["number", "boolean"]
           obj=$(elements).find('#gauge-' + attr.name)
-          console.log obj
-          #@chartobj.push(obj)
-          @gauge=Highcharts.chart(obj[0], Highcharts.merge(@gaugeOptions, {
+          @myChart[attr.name] = Highcharts.chart(obj[0], Highcharts.merge(@gaugeOptions, {
             yAxis: {
                 min: attr.min,
                 max: attr.max,
@@ -245,21 +255,16 @@ $(document).on 'templateinit', (event) ->
                 name: attr.name,
                 data: [0],
                 dataLabels: {
-                  format: '<div style="text-align:center"><span style="font-size:'+attr.scale*17+'px;color:' +
+                  format: '<div style="text-align:center"><span style="font-size:'+@scale*17+'px;color:' +
                       ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.0f}</span><br/>' +
-                         '<span style="font-size:'+attr.scale*12+'px;color:silver">'+attr.unit+'</span></div>',
+                         '<span style="font-size:'+@scale*12+'px;color:silver">'+attr.unit+'</span></div>',
                   y: +12
                 }
             }]
           }))
+      @updateGauges()
     #  window.addEventListener("resize", @resize , true)
-      setInterval () =>
-        @refresh()
-      , 10000
       super(elements)
-
-    refresh: () =>
-      console.log "refresh"
 
 #    resize: () =>
 #     setTimeout =>
