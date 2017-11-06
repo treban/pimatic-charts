@@ -81,7 +81,7 @@ module.exports = {
         format: "table"
         items:
           type: "object"
-          required: ["name", "expression", "type", "chart"]
+          required: ["label"]
           properties:
             label:
               description: "Label for y-axis"
