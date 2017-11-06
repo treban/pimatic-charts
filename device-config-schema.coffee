@@ -19,11 +19,11 @@ module.exports = {
         type: "string"
         default: ""
       height:
-        description: "Height"
+        description: "Chart height"
         type: "number"
         default: 150
       timerange:
-        description: "TimeRanger to display"
+        description: "Time-range to display"
         type: "string"
         enum: ["30min", "1h", "3h", "12h", "1d", "3d", "7d", "14d", "1month" ]
         default: "1d"
@@ -52,25 +52,25 @@ module.exports = {
           required: ["name", "expression", "type", "chart"]
           properties:
             name:
-              description: "Name for the corresponding variable."
+              description: "Name for the corresponding variable"
               type: "string"
             expression:
               description: "
                 The expression to use to get the value. Can be just a variable name ($myVar),
-                a calculation ($myVar + 10)"
+                or a calculation ($myVar + 10)"
               type: "string"
             type:
-              description: "The type of the variable."
+              description: "The type of the variable is fix"
               type: "string"
               default: "number"
               enum: ["number"]
             chart:
-              description: "The type of the chart for this variable ."
+              description: "The type of the chart for this variable"
               type: "string"
               default: "line"
               enum: ["line" , "spline", "area", "areaspline", "column", "scatter" ]
             step:
-              description: "Chart type"
+              description: "Draw steps instead lines."
               type: "boolean"
               default: false
               required: false
@@ -95,7 +95,7 @@ module.exports = {
           required: ["name", "expression", "type", "min", "max"]
           properties:
             name:
-              description: "Name for the corresponding variable."
+              description: "Name for the corresponding variable"
               type: "string"
             expression:
               description: "
@@ -103,25 +103,25 @@ module.exports = {
                 a calculation ($myVar + 10)"
               type: "string"
             type:
-              description: "The type of the variable."
+              description: "The type of the variable is fix"
               type: "string"
               default: "number"
               enum: ["number"]
             min:
-              description: "The type of the chart for this variable ."
+              description: "The min value"
               type: "number"
               default: 0
             max:
-              description: "The type of the chart for this variable ."
+              description: "The max value"
               type: "number"
               default: 100
             unit:
-              description: "A custom label to use in the frontend."
+              description: "A custom unit label"
               type: "string"
               required: false
               default: ""
             showRange:
-              description: "A custom label to use in the frontend."
+              description: "Show range"
               type: "boolean"
               required: false
               default: false
