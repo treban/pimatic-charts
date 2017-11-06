@@ -74,6 +74,28 @@ module.exports = {
               type: "boolean"
               default: false
               required: false
+        yAxis:
+        description: "yAxis"
+        type: "array"
+        default: []
+        format: "table"
+        items:
+          type: "object"
+          required: ["name", "expression", "type", "chart"]
+          properties:
+            label:
+              description: "Label for y-axis"
+              type: "string"
+            unit:
+              description: "The unit of the value"
+              type: "string"
+              default: ""
+              required: false
+            opposit:
+              description: "Draw y-axis on the right side"
+              type: "boolean"
+              default: false
+              required: false
   GaugeDevice :
     title: "Gauge Properties"
     type: "object"
