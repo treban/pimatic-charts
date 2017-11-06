@@ -1,22 +1,32 @@
 pimatic-charts
 =======================
 
-This plugin provides a chart device for the pimatic frontend [pimatic](https://pimatic.org/).
+This plugin provides a chart device for the [pimatic](https://pimatic.org/) frontend.
 
-####Features
+#### Features
+* Chart device 
+* Gauge device
+* Many customization options 
 
-###Installation
+### Installation
 
-###Configuration
+Just activate the plugin in your pimatic config. The plugin manager automatically installs the package with his dependencys.
+
+### Configuration
+
+You can load the plugin by adding following in the config.json from your pimatic server:
+
+    {
+      "plugin": "chart"
+    }
 
 ### Usages
 
-#### Provided predicates
+The devices are based on the built-in variable device from pimatic.
 
-#### Provided actions
+#### Chart device
 
-
-### ToDoList
+#### Gauge device
 
 ### ChangeLog
 * 0.0.1 : First public version
