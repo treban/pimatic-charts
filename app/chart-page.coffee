@@ -29,6 +29,9 @@ $(document).on 'templateinit', (event) ->
       @interval = @device.config.interval ? @device.configDefaults.interval
       @timerange = @device.config.timerange ? @device.configDefaults.timerange
       @allowzoom = @device.config.allowzoom ? @device.configDefaults.allowzoom
+      @devyaxis = @device.config.yaxis ? @device.configDefaults.yaxis
+      @allowtrace = @device.config.allowtrace ? @device.configDefaults.allowtrace
+      @showdatalabels = @device.config.showdatalabels ? @device.configDefaults.showdatalabels
 
 
       @dateval = new Date()
@@ -43,6 +46,18 @@ $(document).on 'templateinit', (event) ->
         when @timerange=="14d" then @dateval.setDate(@dateval.getDate() - 14)
         when @timerange=="1month" then @dateval.setDate(@dateval.getDate() - 30)
 
+      @yaxis = []
+      for ya in @devyaxis
+        @yaxis.push({
+          labels: {
+              format: '{value}'+ya.unit,
+          },
+          title: {
+              text: ya.label,
+          },
+          opposite: ya.opposite
+          })
+      console.log @yaxis
       @chartoptions =
         {
           chart: {
@@ -61,11 +76,7 @@ $(document).on 'templateinit', (event) ->
                   text: @xlabel
               }
           },
-          yAxis: {
-              title: {
-                  text: @ylabel
-              }
-          },
+          yAxis: @yaxis,
           legend: {
               enabled: @legend
           },
@@ -83,8 +94,36 @@ $(document).on 'templateinit', (event) ->
                           lineWidth: 1
                       }
                   },
-                  threshold: null
-              }
+                  threshold: null,
+                  dataLabels: {
+                    enabled: @showdatalabels
+                  },
+                  enableMouseTracking: @allowtrace
+              },
+              line: {
+                dataLabels: {
+                        enabled: @showdatalabels
+                    },
+                enableMouseTracking:  @allowtrace
+              },
+              spline: {
+                dataLabels: {
+                        enabled: @showdatalabels
+                    },
+                enableMouseTracking:  @allowtrace
+              },
+              areaspline: {
+                dataLabels: {
+                        enabled: @showdatalabels
+                    },
+                enableMouseTracking:  @allowtrace
+              },
+              column: {
+                dataLabels: {
+                        enabled: @showdatalabels
+                    },
+                enableMouseTracking:  @allowtrace
+              },
           },
           series: []
         }
@@ -118,6 +157,7 @@ $(document).on 'templateinit', (event) ->
           @data = @convertData(result.events)
           update = {
             name: attr.name,
+            yAxis: attr.yaxis,
             data: @data,
             type: attr.chart,
             step: attr.step,
@@ -165,6 +205,7 @@ $(document).on 'templateinit', (event) ->
       @deviceConfig = @device.config
       @devattr = @device.config.variables
       @scale = @device.config.scale ? @device.configDefaults.scale
+      @scale = @scale - 0.2
       @chartId = "chart-#{templData.deviceId}"
 
       super(templData, @device)
@@ -179,13 +220,13 @@ $(document).on 'templateinit', (event) ->
       @gaugeOptions = {
         chart: {
           type: 'solidgauge',
-          height: 190*@scale,
-          width: 270*@scale
+          height: 175*@scale,
+          width: 250*@scale
         },
         title: null,
         pane: {
-            center: ['50%', '85%'],
-            size: '165%',
+            center: ['50%', '80%'],
+            size: '130%',
             startAngle: -90,
             endAngle: 90,
             background: {
@@ -203,15 +244,15 @@ $(document).on 'templateinit', (event) ->
         },
         yAxis: {
             stops: [
-                [0.1, '#55BF3B'],
-                [0.5, '#DDDF0D'],
-                [0.9, '#DF5353']
+                [0.2, '#55BF3B'],
+                [0.4, '#DDDF0D'],
+                [0.8, '#DF5353']
             ],
             lineWidth: 0,
             minorTickInterval: null,
             tickAmount: 2,
             title: {
-                y: -1*(70*@scale)
+                y: -1*(60*@scale)
             },
             labels: {
                 enabled: true,
@@ -245,7 +286,7 @@ $(document).on 'templateinit', (event) ->
                 min: attr.min,
                 max: attr.max,
                 title: {
-                    text: attr.name
+                    text: attr.label
                 }
                 labels: {
                   enabled: attr.showRange
@@ -257,7 +298,7 @@ $(document).on 'templateinit', (event) ->
                 dataLabels: {
                   format: '<div style="text-align:center"><span style="font-size:'+@scale*17+'px;color:' +
                       ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.0f}</span><br/>' +
-                         '<span style="font-size:'+@scale*12+'px;color:silver">'+attr.unit+'</span></div>',
+                         '<span style="font-size:'+@scale*14+'px;color:silver">'+attr.unit+'</span></div>',
                   y: +12
                 }
             }]

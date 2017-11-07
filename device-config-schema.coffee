@@ -14,10 +14,6 @@ module.exports = {
         description: "X - label"
         type: "string"
         default: ""
-      ylabel:
-        description: "Y - label"
-        type: "string"
-        default: ""
       height:
         description: "Chart height"
         type: "number"
@@ -35,6 +31,16 @@ module.exports = {
         required: false
       allowzoom:
         description: "Allow zoom"
+        type: "boolean"
+        default: false
+        required: false
+      allowtrace:
+        description: "Allow mouse trace"
+        type: "boolean"
+        default: false
+        required: false
+      showdatalabels:
+        description: "Show data labels"
         type: "boolean"
         default: false
         required: false
@@ -62,22 +68,25 @@ module.exports = {
             type:
               description: "The type of the variable is fix"
               type: "string"
-              default: "number"
               enum: ["number"]
             chart:
               description: "The type of the chart for this variable"
               type: "string"
-              default: "line"
               enum: ["line" , "spline", "area", "areaspline", "column", "scatter" ]
+            yaxis:
+              description: "The yAxis reference"
+              type: "number"
+              default: 0
             step:
               description: "Draw steps instead lines."
               type: "boolean"
               default: false
               required: false
-        yAxis:
+      yaxis:
         description: "yAxis"
         type: "array"
-        default: []
+        required: ["label", "unit"]
+        default: [{"label": "","unit": ""}]
         format: "table"
         items:
           type: "object"
@@ -89,9 +98,7 @@ module.exports = {
             unit:
               description: "The unit of the value"
               type: "string"
-              default: ""
-              required: false
-            opposit:
+            opposite:
               description: "Draw y-axis on the right side"
               type: "boolean"
               default: false
@@ -99,14 +106,13 @@ module.exports = {
   GaugeDevice :
     title: "Gauge Properties"
     type: "object"
-    required: ["scale"]
     extensions: ["xLink","xAttributeOptions"]
     properties:
       scale:
         description: "scale factor"
         type: "number"
         default: 1.0
-        required: true
+        required: false
       variables:
         description: "Variables to display"
         type: "array"
@@ -114,37 +120,43 @@ module.exports = {
         format: "table"
         items:
           type: "object"
-          required: ["name", "expression", "type", "min", "max"]
+          required: ["name", "expression", "type", "min", "max", "unit", "showRange"]
           properties:
             name:
               description: "Name for the corresponding variable"
               type: "string"
+              required: true
+            label:
+              description: "Label"
+              type: "string"
+              required: true
             expression:
               description: "
                 The expression to use to get the value. Can be just a variable name ($myVar),
                 a calculation ($myVar + 10)"
               type: "string"
+              required: true
             type:
               description: "The type of the variable is fix"
               type: "string"
-              default: "number"
               enum: ["number"]
+              required: true
             min:
               description: "The min value"
               type: "number"
-              default: 0
+              required: true
             max:
               description: "The max value"
               type: "number"
-              default: 100
+              required: true
             unit:
               description: "A custom unit label"
               type: "string"
-              required: false
+              required: true
               default: ""
             showRange:
               description: "Show range"
               type: "boolean"
-              required: false
+              required: true
               default: false
 }

@@ -6,7 +6,7 @@ script#chart-template(type='text/template')
 
 script#gauge-template(type='text/template')
   li.sortable.no-header.chart-device
-    div.item-inner
+
       label.device-label(data-bind="text: name, tooltip: $data.labelTooltipHtml")
       span.attributes(data-bind="template: { name: 'gauge-attr-template', foreach: $data.device.attributes, afterRender: $data.afterAttributeRender }")
 
