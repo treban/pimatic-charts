@@ -153,10 +153,8 @@ module.exports = {
               description: "A custom unit label"
               type: "string"
               required: true
-              default: ""
             showRange:
               description: "Show range"
               type: "boolean"
               required: true
-              default: false
 }

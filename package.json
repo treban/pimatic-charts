@@ -1,16 +1,14 @@
 {
   "name": "pimatic-charts",
   "description": "Pimatic plugin for chart support",
-  "author": {
-    "name": "Kosta",
-    "email": "trebankosta@gmail.com"
-  },
+  "author": "Kosta <trebankosta@gmail.com>",
   "main": "charts",
   "files": [
     "app/chart-page.coffee",
     "app/chart-template.jade",
     "app/chart.css",
     "app/highcharts.js",
+    "app/solid-gauge.js",
     "charts.coffee",
     "README.md",
     "LICENSE",
@@ -25,8 +23,7 @@
     "url": "git://github.com/treban/pimatic-charts.git"
   },
   "configSchema": "charts-config-schema.coffee",
-  "dependencies": {
-  },
+  "dependencies": {},
   "keywords": [
     "pimatic",
     "charts"
@@ -42,10 +39,13 @@
     "url": "https://github.com/treban/pimatic-charts/issues"
   },
   "maintainers": [
-    {
-      "name": "treban",
-      "email": "trebankosta@gmail.com"
-    }
+    "treban <trebankosta@gmail.com>"
   ],
-  "directories": {}
+  "directories": {
+    "doc": "doc"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
