@@ -20,8 +20,10 @@ Just activate the plugin in your pimatic config. The plugin manager automaticall
 You can load the plugin by adding following in the config.json from your pimatic server:
 
     {
-      "plugin": "charts"
+      "plugin": "charts",
+      "debug": true
     }
+
 
 ### Usages
 
