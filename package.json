@@ -16,7 +16,7 @@
     "device-config-schema.coffee"
   ],
   "version": "0.0.1",
-  "license": "GPL-2.0",
+  "license": "Creative Commons BY-NC-SA License 3.0",
   "homepage": "https://github.com/treban/pimatic-charts",
   "repository": {
     "type": "git",
