@@ -156,7 +156,7 @@ Example gauge device:
   - BUGFIX (#1: UTC)
   - dashStyle included
 
-#### licenses
+#### LICENSE
 
 This plugin is licenses under [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/)
 and is not free for commercial and Governmental use.
@@ -164,5 +164,5 @@ and is not free for commercial and Governmental use.
 #### Credits
 This plugin uses highchart.
 Highcharts JS v6.0.2 (2017-10-20)
-2009-2016 Torstein Honsi
+(C) 2009-2016 Torstein Honsi
 [www.highchart.com](https://shop.highsoft.com/www.highcharts.com)
