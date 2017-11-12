@@ -73,6 +73,10 @@ module.exports = {
               description: "The type of the chart for this variable"
               type: "string"
               enum: ["line" , "spline", "area", "areaspline", "column", "scatter" ]
+            dashstyle:
+              description: "The type of dash style."
+              type: "string"
+              enum: ["Solid" , "ShortDash", "ShortDot", "ShortDashDot", "Dot", "Dash" ]              
             yaxis:
               description: "The yAxis reference"
               type: "number"

@@ -129,7 +129,13 @@ $(document).on 'templateinit', (event) ->
         }
 
     afterRender: (elements) =>
+
       @chartobj = $(elements).find('#' + @chartId)
+      Highcharts.setOptions({
+        global: {
+          useUTC: false
+        }
+      })
       @myChart = Highcharts.chart(@chartobj[0],@chartoptions)
       @drawSeries()
       window.addEventListener("resize", @resize , true)
@@ -161,6 +167,7 @@ $(document).on 'templateinit', (event) ->
             data: @data,
             type: attr.chart,
             step: attr.step,
+            dashStyle: attr.dashstyle,
             tooltip: {
                 valueDecimals: 2
             }

@@ -24,7 +24,6 @@ You can load the plugin by adding following in the config.json from your pimatic
       "debug": true
     }
 
-
 ### Usages
 
 The devices are based on the built-in variable device from pimatic.
@@ -153,3 +152,17 @@ Example gauge device:
 ```
 ### ChangeLog
 * 0.0.1 : First public version
+* 0.0.2 :
+  - BUGFIX (#1: UTC)
+  - dashStyle included
+
+#### licenses
+
+This plugin is licenses under [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/)
+and is not free for commercial and Governmental use.
+
+#### Credits
+This plugin uses highchart.
+Highcharts JS v6.0.2 (2017-10-20)
+2009-2016 Torstein Honsi
+[www.highchart.com](https://shop.highsoft.com/www.highcharts.com)
