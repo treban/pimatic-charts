@@ -18,14 +18,13 @@ module.exports = (env) ->
       @framework.on "after init", =>
         mobileFrontend = @framework.pluginManager.getPlugin 'mobile-frontend'
         if mobileFrontend?
-      #    mobileFrontend.registerAssetFile 'js', "pimatic-charts/app/highcharts-more.js"
           mobileFrontend.registerAssetFile 'js', "pimatic-charts/app/chart-page.coffee"
-          mobileFrontend.registerAssetFile 'js', "pimatic-charts/app/highcharts.js"
+          mobileFrontend.registerAssetFile 'js', "pimatic-charts/app/highstock.js"
           mobileFrontend.registerAssetFile 'html', "pimatic-charts/app/chart-template.jade"
           mobileFrontend.registerAssetFile 'css', "pimatic-charts/app/chart.css"
           mobileFrontend.registerAssetFile 'js', "pimatic-charts/app/solid-gauge.js"
       @framework.on('destroy', (context) =>
-        env.logger.info("Speichere RRD Graphen...")
+        env.logger.info("Plugin finish...")
       )
 
   class ChartDevice extends env.devices.VariablesDevice

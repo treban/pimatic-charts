@@ -7,7 +7,7 @@
     "app/chart-page.coffee",
     "app/chart-template.jade",
     "app/chart.css",
-    "app/highcharts.js",
+    "app/highstock.js",
     "app/solid-gauge.js",
     "charts.coffee",
     "README.md",

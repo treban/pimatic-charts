@@ -9,6 +9,7 @@ $(document).on 'templateinit', (event) ->
     @myChart = null
     @dateval = 0
     @drawseries = null
+    @interObj = null
 
     colors: [
       '#7cb5ec', '#434348', '#90ed7d', '#f7a35c', '#8085e9',
@@ -25,6 +26,7 @@ $(document).on 'templateinit', (event) ->
       @height = @device.config.height ? @device.configDefaults.height
       @xlabel = @device.config.xlabel ? @device.configDefaults.xlabel
       @ylabel = @device.config.ylabel ? @device.configDefaults.ylabel
+#      @theme = @device.config.theme ? @device.configDefaults.theme
       @legend = @device.config.legend ? @device.configDefaults.legend
       @interval = @device.config.interval ? @device.configDefaults.interval
       @timerange = @device.config.timerange ? @device.configDefaults.timerange
@@ -32,7 +34,8 @@ $(document).on 'templateinit', (event) ->
       @devyaxis = @device.config.yaxis ? @device.configDefaults.yaxis
       @allowtrace = @device.config.allowtrace ? @device.configDefaults.allowtrace
       @showdatalabels = @device.config.showdatalabels ? @device.configDefaults.showdatalabels
-
+      @showdatepicker = @device.config.showdatepicker ? @device.configDefaults.showdatepicker
+      @devbuttons = @device.config.datebuttons ? @device.configDefaults.datebuttons
 
       @dateval = new Date()
       @dateval = switch
@@ -57,7 +60,21 @@ $(document).on 'templateinit', (event) ->
           },
           opposite: ya.opposite
           })
-      console.log @yaxis
+
+      @datebuttons = []
+      for but in @devbuttons
+        @datebuttons.push({
+          type: but.unit,
+          count: but.count,
+          text: but.label,
+          dataGrouping: {
+              forced: true,
+              approximation: "average",
+              enabled: but.datagrouping
+              units: [[but.unit, [1]]]
+          }
+        })
+
       @chartoptions =
         {
           chart: {
@@ -74,13 +91,26 @@ $(document).on 'templateinit', (event) ->
               type: 'datetime',
               title: {
                   text: @xlabel
-              }
+              },
+              ordinal: false
           },
           yAxis: @yaxis,
           legend: {
               enabled: @legend
           },
           credits: {
+              enabled: false
+          },
+          navigator: {
+              enabled: false
+          },
+          rangeSelector: {
+              enabled: @showdatepicker
+              inputEnabled: false,
+              buttons: @datebuttons,
+
+          },
+          scrollbar: {
               enabled: false
           },
           plotOptions: {
@@ -94,6 +124,7 @@ $(document).on 'templateinit', (event) ->
                           lineWidth: 1
                       }
                   },
+                  connectNulls: true,
                   threshold: null,
                   dataLabels: {
                     enabled: @showdatalabels
@@ -127,21 +158,24 @@ $(document).on 'templateinit', (event) ->
           },
           series: []
         }
+    destroy: ->
+      super()
+      clearInterval(@interObj)
 
     afterRender: (elements) =>
-
       @chartobj = $(elements).find('#' + @chartId)
       Highcharts.setOptions({
         global: {
           useUTC: false
         }
       })
-      @myChart = Highcharts.chart(@chartobj[0],@chartoptions)
+      @myChart = Highcharts.stockChart(@chartobj[0],@chartoptions)
+#      Highcharts.setOptions(darkunica)
+#      @myChart = Highcharts.chart(@chartobj[0],@chartoptions)
       @drawSeries()
       window.addEventListener("resize", @resize , true)
-      console.log @interval
       if (@interval > 0 )
-        setInterval () =>
+        @interObj=setInterval () =>
           @refresh()
         , @interval*1000
       super(elements)
@@ -170,13 +204,16 @@ $(document).on 'templateinit', (event) ->
             dashStyle: attr.dashstyle,
             tooltip: {
                 valueDecimals: 2
-            }
+            },
+            color: attr.color,
           }
           if (!refresh)
             @myChart.addSeries(update)
           else
             @myChart.series[series].setData(@data)
-      ).fail(ajaxAlertFail)
+      ).fail( (ajaxAlertFail) =>
+        clearInterval(@interObj)
+        )
 
     convertData: (rawdata) =>
       @resu = new Array()

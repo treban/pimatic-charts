@@ -1,3 +1,12 @@
 ul.items .chart-device .chart {
 
 }
+
+span.credit {
+  float: right;
+  font-size: 6.5pt;
+  vertical-align: bottom;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
