@@ -73,7 +73,6 @@ Example chart device:
       "yaxis": 3
     }
   ],
-  "xAttributeOptions": [],
   "echo": {
     "additionalNames": []
   },
@@ -140,7 +139,6 @@ Example gauge device:
       "label": "Power"
     }
   ],
-  "xAttributeOptions": [],
   "echo": {
     "additionalNames": []
   },
