@@ -43,12 +43,23 @@ Example chart device:
 {
   "variables": [
     {
+      "name": "pressure",
+      "expression": "$wetter.pressure",
+      "type": "number",
+      "chart": "areaspline",
+      "yaxis": 2,
+      "dashstyle": "Solid",
+      "color": "#a6c96a"
+    },
+    {
       "name": "temperature",
       "expression": "$wetter.temperature",
       "type": "number",
       "step": false,
       "chart": "areaspline",
-      "yaxis": 0
+      "yaxis": 0,
+      "dashstyle": "Solid",
+      "color": "#f28f43"
     },
     {
       "name": "humidity",
@@ -56,21 +67,16 @@ Example chart device:
       "type": "number",
       "step": false,
       "chart": "spline",
-      "yaxis": 1
-    },
-    {
-      "name": "pressure",
-      "expression": "$wetter.pressure",
-      "type": "number",
-      "chart": "spline",
-      "yaxis": 2
+      "yaxis": 1,
+      "dashstyle": "Solid"
     },
     {
       "name": "windspeed",
       "expression": "$wetter.windspeed",
       "type": "number",
       "chart": "spline",
-      "yaxis": 3
+      "yaxis": 3,
+      "dashstyle": "Solid"
     }
   ],
   "echo": {
@@ -82,29 +88,58 @@ Example chart device:
   "xlabel": "x-label",
   "height": 250,
   "subtitle": "Subtitle",
-  "timerange": "1d",
+  "timerange": "7d",
   "legend": true,
   "interval": 5,
   "yaxis": [
-    {
-      "label": "Temperature",
-      "unit": "°C"
-    },
-    {
-      "label": "humidity",
-      "opposite": true,
-      "unit": "%"
-    },
-    {
-      "label": "pressure",
-      "unit": "mbar"
-    },
-    {
-      "label": "windspeed",
-      "unit": "m/s",
-      "opposite": true
-    }
-  ]
+  {
+    "label": "Temperature",
+    "unit": "°C"
+  },
+  {
+    "label": "humidity",
+    "opposite": true,
+    "unit": "%"
+  },
+  {
+    "label": "pressure",
+    "unit": "mbar"
+  },
+  {
+    "label": "windspeed",
+    "unit": "m/s",
+    "opposite": true
+  }
+],
+"allowzoom": true,
+"allowtrace": true,
+"datebuttons": [
+  {
+    "label": "3day",
+    "count": 6,
+    "unit": "day",
+    "datagrouping": true
+  },
+  {
+    "label": "1min",
+    "count": 1,
+    "datagrouping": false,
+    "unit": "minute"
+  },
+  {
+    "label": "3day",
+    "count": 3,
+    "unit": "day",
+    "datagrouping": false
+  },
+  {
+    "label": "ALL",
+    "unit": "all",
+    "count": 0,
+    "datagrouping": false
+  }
+],
+"showdatepicker": true
 },
 
 ```
@@ -120,7 +155,7 @@ Example gauge device:
   "variables": [
     {
       "name": "Tank",
-      "expression": "$kosta-20000",
+      "expression": "$tank",
       "type": "number",
       "min": 0,
       "max": 30000,
@@ -130,7 +165,7 @@ Example gauge device:
     },
     {
       "name": "Power",
-      "expression": "$kosta-39000",
+      "expression": "$power",
       "type": "number",
       "min": 0,
       "max": 5000,
@@ -153,6 +188,9 @@ Example gauge device:
 * 0.0.2 :
   - BUGFIX (#1: UTC)
   - dashStyle included
+* 0.0.3 :
+  - line colors
+  - date picker
 
 #### LICENSE
 

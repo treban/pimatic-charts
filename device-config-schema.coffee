@@ -3,7 +3,7 @@ module.exports = {
   ChartDevice :
     title: "Chart Properties"
     type: "object"
-    extensions: ["xLink","xAttributeOptions"]
+    extensions: ["xLink"]
     properties:
       subtitle:
         description: "Subtitle"
@@ -58,7 +58,7 @@ module.exports = {
           required: ["name", "expression", "type", "chart"]
           properties:
             name:
-              description: "Name for the corresponding variable"
+              description: "Name for the corresponding variable *without spaces*"
               type: "string"
             expression:
               description: "
@@ -76,7 +76,7 @@ module.exports = {
             dashstyle:
               description: "The type of dash style."
               type: "string"
-              enum: ["Solid" , "ShortDash", "ShortDot", "ShortDashDot", "Dot", "Dash" ]              
+              enum: ["Solid" , "ShortDash", "ShortDot", "ShortDashDot", "Dot", "Dash" ]
             yaxis:
               description: "The yAxis reference"
               type: "number"
@@ -86,10 +86,13 @@ module.exports = {
               type: "boolean"
               default: false
               required: false
+            color:
+              description: "The line color"
+              type: "string"
+              required: false
       yaxis:
         description: "yAxis"
         type: "array"
-        required: ["label", "unit"]
         default: [{"label": "","unit": ""}]
         format: "table"
         items:
@@ -107,10 +110,37 @@ module.exports = {
               type: "boolean"
               default: false
               required: false
+      showdatepicker:
+        description: "If datepicker is enabled, you must define the date buttons"
+        type: "boolean"
+        default: false
+        required: false
+      datebuttons:
+        description: "Date picker buttons"
+        type: "array"
+        default: [{"label": "1min","count":1,"unit": "minute"},{"label": "1day","count":1,"unit": "day"},{"label": "ALL","count":0,"unit": "all"}]
+        format: "table"
+        items:
+          type: "object"
+          required: ["label", "unit", "count", "datagrouping"]
+          properties:
+            label:
+              description: "Label for date button"
+              type: "string"
+            count:
+              description: "The count of the picker"
+              type: "number"
+            unit:
+              description: "The unit of the picker"
+              type: "string"
+              enum: ["minute", "hour", "day", "week", "month", "ytd", "all" ]
+            datagrouping:
+              description: "Group Data per unit"
+              type: "boolean"
   GaugeDevice :
     title: "Gauge Properties"
     type: "object"
-    extensions: ["xLink","xAttributeOptions"]
+    extensions: ["xLink"]
     properties:
       scale:
         description: "scale factor"
@@ -127,7 +157,7 @@ module.exports = {
           required: ["name", "expression", "type", "min", "max", "unit", "showRange"]
           properties:
             name:
-              description: "Name for the corresponding variable"
+              description: "Name for the corresponding variable *without spaces*"
               type: "string"
               required: true
             label:
