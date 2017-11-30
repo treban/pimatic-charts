@@ -201,4 +201,4 @@ and is not free for commercial and Governmental use.
 This plugin uses highchart.
 Highcharts JS v6.0.2 (2017-10-20)
 (C) 2009-2016 Torstein Honsi
-[www.highchart.com](https://shop.highsoft.com/www.highcharts.com)
+[www.highchart.com](https://www.highcharts.com)
