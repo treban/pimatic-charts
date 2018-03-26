@@ -2,7 +2,7 @@ pimatic-charts
 =======================
 
 [![version](https://img.shields.io/npm/v/pimatic-charts.svg?branch=master?style=flat-square)](https://www.npmjs.com/package/pimatic-charts)
-[![downloads](https://img.shields.io/npm/v/pimatic-charts.svg?branch=master?style=flat-square)](https://www.npmjs.com/package/pimatic-charts)
+[![downloads](https://img.shields.io/npm/dm/pimatic-charts.svg?branch=master?style=flat-square)](https://www.npmjs.com/package/pimatic-charts)
 [![license](https://img.shields.io/npm/l/pimatic-charts.svg)](https://github.com/treban/pimatic-charts)
 
 
