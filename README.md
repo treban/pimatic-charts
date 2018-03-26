@@ -1,6 +1,11 @@
 pimatic-charts
 =======================
 
+[![version](https://img.shields.io/npm/v/pimatic-charts.svg?branch=master?style=flat-square)](https://www.npmjs.com/package/pimatic-charts)
+[![downloads](https://img.shields.io/npm/v/pimatic-charts.svg?branch=master?style=flat-square)](https://www.npmjs.com/package/pimatic-charts)
+[![license](https://img.shields.io/npm/l/pimatic-charts.svg)](https://github.com/treban/pimatic-charts)
+
+
 This plugin provides a chart device for the [pimatic](https://pimatic.org/) frontend.
 It is based on [highcharts](https://www.highcharts.com/demo).
 
@@ -190,7 +195,9 @@ Example gauge device:
   - dashStyle included
 * 0.0.3 :
   - line colors
-  - date picker
+  - date picker  
+* 0.0.4 :
+  - FIX #5 & #6
 
 #### LICENSE
 

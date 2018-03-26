@@ -294,7 +294,9 @@ $(document).on 'templateinit', (event) ->
             ],
             lineWidth: 0,
             minorTickInterval: null,
+            TickInterval:100,
             tickAmount: 2,
+            endOnTick: false,
             title: {
                 y: -1*(60*@scale)
             },
@@ -329,6 +331,7 @@ $(document).on 'templateinit', (event) ->
             yAxis: {
                 min: attr.min,
                 max: attr.max,
+                tickPositions: [attr.min, attr.max]
                 title: {
                     text: attr.label
                 }

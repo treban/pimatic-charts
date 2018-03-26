@@ -118,7 +118,7 @@ module.exports = {
       datebuttons:
         description: "Date picker buttons"
         type: "array"
-        default: [{"label": "1min","count":1,"unit": "minute"},{"label": "1day","count":1,"unit": "day"},{"label": "ALL","count":0,"unit": "all"}]
+        default: [{"label": "1min","count":1,"unit": "minute","datagrouping":false},{"label": "1day","count":1,"unit": "day","datagrouping":false},{"label": "ALL","count":0,"unit": "all","datagrouping":false}]
         format: "table"
         items:
           type: "object"
