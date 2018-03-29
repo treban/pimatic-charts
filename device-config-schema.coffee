@@ -154,7 +154,7 @@ module.exports = {
         format: "table"
         items:
           type: "object"
-          required: ["name", "expression", "type", "min", "max", "unit", "showRange"]
+          required: ["name", "expression", "type", "min", "max", "unit", "showRange", "showPointer"]
           properties:
             name:
               description: "Name for the corresponding variable *without spaces*"
@@ -191,4 +191,20 @@ module.exports = {
               description: "Show range"
               type: "boolean"
               required: true
+            showPointer:
+              description: "Show pointer"
+              type: "boolean"
+              required: true  
+            showReverse:
+              description: "Show reverse"
+              type: "boolean"
+              required: true
+            decimals:
+              description: "The number of digits after floating point"
+              type: "number"
+              required: true  
+            showDonut:
+              description: "Show full donut gauge "
+              type: "boolean"
+              required: true  
 }
